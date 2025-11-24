@@ -178,6 +178,13 @@ export default function ExpenseScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Student Expense Tracker</Text>
 
+      // new filter buttons
+      <View style={styles.filterRow}>
+        {filterButton({label: 'All', value: 'All'})}
+        {filterButton({label: 'This Week', value: 'Week'})}
+        {filterButton({label: 'This Month', value: 'Month'})}
+      </View>
+
       <View style={styles.form}>
         <TextInput
           style={styles.input}
