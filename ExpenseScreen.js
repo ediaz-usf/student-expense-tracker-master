@@ -19,12 +19,22 @@ export default function ExpenseScreen() {
   const [category, setCategory] = useState('');
   const [note, setNote] = useState('');
 
+  // new filter for date
+  const [filter, setFilter] = useState('All');
+
+  // load expenses - now ordered by date descending
   const loadExpenses = async () => {
     const rows = await db.getAllAsync(
-      'SELECT * FROM expenses ORDER BY id DESC;'
+      'SELECT * FROM expenses ORDER BY date DESC, id DESC;'
     );
     setExpenses(rows);
   };
+
+  // create today's date variable
+  const getTodayDateString = () => {
+    return new Date().toISOString().slice(0, 10);
+  }
+
   const addExpense = async () => {
     const amountNumber = parseFloat(amount);
 
@@ -41,9 +51,13 @@ export default function ExpenseScreen() {
       return;
     }
 
+    // today's date
+    const today = getTodayDateString();
+
+    // insert with date
     await db.runAsync(
-      'INSERT INTO expenses (amount, category, note) VALUES (?, ?, ?);',
-      [amountNumber, trimmedCategory, trimmedNote || null]
+      'INSERT INTO expenses (amount, category, note, date) VALUES (?, ?, ?, ?);',
+      [amountNumber, trimmedCategory, trimmedNote || null, today]
     );
 
     setAmount('');
