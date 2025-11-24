@@ -135,6 +135,7 @@ export default function ExpenseScreen() {
     return expenses;
   }, [expenses, filter]);
 
+  // added date table creation
   useEffect(() => {
     async function setup() {
       await db.execAsync(`
@@ -142,7 +143,8 @@ export default function ExpenseScreen() {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           amount REAL NOT NULL,
           category TEXT NOT NULL,
-          note TEXT
+          note TEXT,
+          date TEXT NOT NULL
         );
       `);
 
