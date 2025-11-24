@@ -22,6 +22,10 @@ export default function ExpenseScreen() {
   // new filter for date
   const [filter, setFilter] = useState('All');
 
+  // editing state
+  const [editingId, setEditingId] = useState(null);
+
+
   // load expenses - now ordered by date descending
   const loadExpenses = async () => {
     const rows = await db.getAllAsync(
