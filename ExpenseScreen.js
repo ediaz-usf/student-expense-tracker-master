@@ -154,6 +154,26 @@ export default function ExpenseScreen() {
     setup();
   }, []);
 
+
+  const filterButton = ({label, value}) => (
+    <TouchableOpacity
+      style={[
+        styles.filterButton,
+        filter === value && styles.filterButtonActive,
+      ]}
+      onPress={() => setFilter(value)}
+    >
+      <Text
+        style={[
+          styles.filterButtonText,
+          filter === value && styles.filterButtonTextActive,
+        ]}
+      >
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Student Expense Tracker</Text>
