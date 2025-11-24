@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, use } from 'react';
 import {
   SafeAreaView,
   View,
@@ -179,6 +179,13 @@ export default function ExpenseScreen() {
 
     return totals;
   }, [filteredExpenses]);
+
+  // dynamic total label
+  const totalLabel = useMemo(() => {
+    if (filter === 'Week') return 'Total This Week';
+    if (filter === 'Month') return 'Total This Month';
+    return 'All Time Total';
+  }, [filter]);
 
   const filterButton = ({label, value}) => (
     <TouchableOpacity
