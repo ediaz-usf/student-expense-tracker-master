@@ -176,7 +176,6 @@ export default function ExpenseScreen() {
       totals[cat] += amount;
     }
 
-
     return totals;
   }, [filteredExpenses]);
 
@@ -215,6 +214,30 @@ export default function ExpenseScreen() {
         {filterButton({label: 'All', value: 'All'})}
         {filterButton({label: 'This Week', value: 'Week'})}
         {filterButton({label: 'This Month', value: 'Month'})}
+      </View>
+
+      {/* new analytics container */}
+      <View style={styles.analyticsContainer}>
+        <Text style={styles.analyticsHeading}>
+          Total Spending ({totalLabel}):
+        </Text>
+        <Text style={styles.totalAmount}>
+          ${overallTotal.toFixed(2)}
+        </Text>
+
+        <Text style={styles.analyticsSubheading}>By Category:</Text>
+        {Object.keys(categoryTotals).length === 0 ? (
+          <Text style={styles.analyticsEmpty}>No expenses for this filter.</Text>
+        ) : (
+          Object.entries(categoryTotals).map(([cat, total]) => (
+            <View key={cat} style={styles.categoryRow}>
+              <Text style={styles.categoryName}>{cat}</Text>
+              <Text style={styles.categoryAmount}>
+                ${total.toFixed(2)}
+              </Text>
+            </View>
+          ))
+        )}
       </View>
 
       <View style={styles.form}>
