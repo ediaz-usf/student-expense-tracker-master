@@ -97,6 +97,7 @@ export default function ExpenseScreen() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // filter by Month
     if (filter === 'Month') {
       const month = today.getMonth();
       const year = today.getFullYear();
@@ -108,6 +109,26 @@ export default function ExpenseScreen() {
           d.getFullYear() === year &&
           d.getMonth() === month
         );
+      });
+    }
+
+    // filter by Week
+    if (filter === 'Week') {
+      const day = today.getDay();
+      const diffToMonday = (day + 6) % 7;
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - diffToMonday);
+      startOfWeek.setHours(0, 0, 0, 0);
+
+      const enfdOfWeek = new Date(startOfWeek);
+      enfdOfWeek.setDate(startOfWeek.getDate() + 6);
+      enfdOfWeek.setHours(23, 59, 59, 999);
+
+      return expenses.filter((e) => {
+        if(!e.date) return false;
+        const d = new Date(e.date);
+        d.setHours(0, 0, 0, 0);
+        return d >= startOfWeek && d <= enfdOfWeek;
       });
     }
   })
