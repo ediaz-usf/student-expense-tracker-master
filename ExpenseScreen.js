@@ -404,4 +404,9 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontSize: 12,
   },
+  edit: {
+    color: '#60a5fa',
+    fontSize: 18,
+    marginRight: 8,
+  }
 });
