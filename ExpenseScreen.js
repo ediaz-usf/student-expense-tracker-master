@@ -211,8 +211,9 @@ export default function ExpenseScreen() {
         <Button title="Add Expense" onPress={addExpense} />
       </View>
 
+      // updated to use filteredExpenses
       <FlatList
-        data={expenses}
+        data={filteredExpenses} 
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderExpense}
         ListEmptyComponent={
