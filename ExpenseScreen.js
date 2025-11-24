@@ -131,7 +131,9 @@ export default function ExpenseScreen() {
         return d >= startOfWeek && d <= enfdOfWeek;
       });
     }
-  })
+
+    return expenses;
+  }, [expenses, filter]);
 
   useEffect(() => {
     async function setup() {
