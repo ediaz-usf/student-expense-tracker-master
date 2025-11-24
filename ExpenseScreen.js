@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   SafeAreaView,
   View,
@@ -120,15 +120,15 @@ export default function ExpenseScreen() {
       startOfWeek.setDate(today.getDate() - diffToMonday);
       startOfWeek.setHours(0, 0, 0, 0);
 
-      const enfdOfWeek = new Date(startOfWeek);
-      enfdOfWeek.setDate(startOfWeek.getDate() + 6);
-      enfdOfWeek.setHours(23, 59, 59, 999);
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+      endOfWeek.setHours(23, 59, 59, 999);
 
       return expenses.filter((e) => {
         if(!e.date) return false;
         const d = new Date(e.date);
         d.setHours(0, 0, 0, 0);
-        return d >= startOfWeek && d <= enfdOfWeek;
+        return d >= startOfWeek && d <= endOfWeek;
       });
     }
 
@@ -154,6 +154,31 @@ export default function ExpenseScreen() {
     setup();
   }, []);
 
+  // calculate overall total based on filtered expenses
+  const overallTotal = useMemo(() => {
+    return filteredExpenses.reduce((sum, e) => {
+      const amount = Number(e.amount) || 0;
+      return sum + amount;
+    }, 0);
+  }, [filteredExpenses]);
+
+  // calculate category totals based on filtered expenses
+  const categoryTotals = useMemo(() => {
+    const totals = {};
+
+    for (const e of filteredExpenses) {
+      const cat = e.category || 'Uncategorized';
+      const amount = Number(e.amount) || 0;
+
+      if (!totals[cat]) {
+        totals[cat] = 0;
+      }
+      totals[cat] += amount;
+    }
+
+
+    return totals;
+  }, [filteredExpenses]);
 
   const filterButton = ({label, value}) => (
     <TouchableOpacity
@@ -178,7 +203,7 @@ export default function ExpenseScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Student Expense Tracker</Text>
 
-      // new filter buttons
+      {/* new filter buttons */}
       <View style={styles.filterRow}>
         {filterButton({label: 'All', value: 'All'})}
         {filterButton({label: 'This Week', value: 'Week'})}
@@ -211,7 +236,7 @@ export default function ExpenseScreen() {
         <Button title="Add Expense" onPress={addExpense} />
       </View>
 
-      // updated to use filteredExpenses
+      {/* updated to use filteredExpenses */}
       <FlatList
         data={filteredExpenses} 
         keyExtractor={(item) => item.id.toString()}
