@@ -88,6 +88,30 @@ export default function ExpenseScreen() {
     </View>
   );
 
+  // new filter for date
+  const filteredExpenses = useMemo(() => {
+    if (filter === 'All') {
+      return expenses;
+    };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (filter === 'Month') {
+      const month = today.getMonth();
+      const year = today.getFullYear();
+
+      return expenses.filter((e) => {
+        if(!e.date) return false;
+        const d = new Date(e.date);
+        return (
+          d.getFullYear() === year &&
+          d.getMonth() === month
+        );
+      });
+    }
+  })
+
   useEffect(() => {
     async function setup() {
       await db.execAsync(`
