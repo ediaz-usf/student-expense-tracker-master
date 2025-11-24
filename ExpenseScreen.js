@@ -71,6 +71,43 @@ export default function ExpenseScreen() {
     loadExpenses();
   };
 
+    // save edit function
+    const saveEdit = async () => {
+    const amountNumber = parseFloat(amount);
+
+    if (isNaN(amountNumber) || amountNumber <= 0) {
+      return;
+    }
+
+    const trimmedCategory = category.trim();
+    const trimmedNote = note.trim();
+
+    if (!trimmedCategory) {
+      return;
+    }
+
+    if (!editingId) {
+      return;
+    }
+
+    await db.runAsync(
+      'UPDATE expenses SET amount = ?, category = ?, note = ? WHERE id = ?;',
+      [amountNumber, trimmedCategory, trimmedNote || null, editingId]
+    );
+    setEditingId(null);
+    setAmount('');
+    setCategory('');
+    setNote('');
+
+    await loadExpenses();
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setAmount('');
+    setCategory('');
+    setNote('');
+  };
 
   const deleteExpense = async (id) => {
     await db.runAsync('DELETE FROM expenses WHERE id = ?;', [id]);
