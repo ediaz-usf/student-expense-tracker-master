@@ -318,7 +318,16 @@ export default function ExpenseScreen() {
           value={note}
           onChangeText={setNote}
         />
-        <Button title="Add Expense" onPress={addExpense} />
+        <Button
+          title={editingId ? 'Save Changes' : 'Add Expense'}
+          onPress={editingId ? saveEdit : addExpense}
+        />
+
+        {editingId && (
+          <View style={{ marginTop: 8 }}>
+            <Button title="Cancel Edit" color="#6b7280" onPress={cancelEdit} />
+          </View>
+        )}
       </View>
 
       {/* updated to use filteredExpenses */}
