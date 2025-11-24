@@ -76,7 +76,14 @@ export default function ExpenseScreen() {
     await db.runAsync('DELETE FROM expenses WHERE id = ?;', [id]);
     loadExpenses();
   };
-
+ 
+  // start editing function
+  const startEditing = (item) => {
+  setEditingId(item.id);
+  setAmount(String(item.amount));
+  setCategory(item.category);
+  setNote(item.note || '');
+};
 
   const renderExpense = ({ item }) => (
     <View style={styles.expenseRow}>
